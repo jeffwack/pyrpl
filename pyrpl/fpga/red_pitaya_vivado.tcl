@@ -45,6 +45,9 @@ source                            $path_ip/system_bd.tcl
 # generate SDK files
 generate_target all [get_files    system.bd]
 
+# Tell Vivado to include all BD IP sources for synthesis                                                                                                                   
+read_ip [get_files -all *.xci] 
+
 ################################################################################
 # read files:
 # 1. RTL design sources

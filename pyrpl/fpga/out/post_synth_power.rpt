@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
-| Tool Version     : Vivado v.2024.2 (win64) Build 5239630 Fri Nov 08 22:35:27 MST 2024
-| Date             : Mon Feb  2 21:05:32 2026
-| Host             : PCLDY-ESGT-419 running 64-bit major release  (build 9200)
+| Tool Version     : Vivado v.2024.1 (lin64) Build 5076996 Wed May 22 18:36:09 MDT 2024
+| Date             : Thu Mar 19 02:42:53 2026
+| Host             : correlator6.fnal.gov running 64-bit AlmaLinux release 9.7 (Moss Jungle Cat)
 | Command          : report_power -file out/post_synth_power.rpt
 | Design           : red_pitaya_top
 | Device           : xc7z010clg400-1
@@ -53,15 +53,15 @@ Table of Contents
 | On-Chip                 | Power (W) | Used     | Available | Utilization (%) |
 +-------------------------+-----------+----------+-----------+-----------------+
 | Clocks                  |     0.071 |       15 |       --- |             --- |
-| Slice Logic             |     0.125 |    34609 |       --- |             --- |
-|   LUT as Logic          |     0.104 |    16145 |     17600 |           91.73 |
+| Slice Logic             |     0.125 |    34625 |       --- |             --- |
+|   LUT as Logic          |     0.104 |    16153 |     17600 |           91.78 |
 |   CARRY4                |     0.016 |     1458 |      4400 |           33.14 |
-|   Register              |     0.005 |    13948 |     35200 |           39.63 |
+|   Register              |     0.005 |    13956 |     35200 |           39.65 |
 |   F7/F8 Muxes           |    <0.001 |      556 |     17600 |            3.16 |
 |   LUT as Shift Register |    <0.001 |       51 |      6000 |            0.85 |
 |   Others                |     0.000 |      435 |       --- |             --- |
 |   BUFG                  |     0.000 |        1 |        32 |            3.13 |
-| Signals                 |     0.125 |    29790 |       --- |             --- |
+| Signals                 |     0.125 |    29806 |       --- |             --- |
 | Block RAM               |     0.103 |       34 |        60 |           56.67 |
 | PLL                     |     0.097 |        1 |         2 |           50.00 |
 | DSPs                    |     0.042 |       46 |        80 |           57.50 |
