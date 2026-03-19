@@ -102,7 +102,7 @@ localparam PID3  = 'd3; //formerly PID22
 localparam TRIG  = 'd3; //formerly PID3
 localparam IIR   = 'd4; //IIR filter to connect in series to PID module
 localparam IQ0   = 'd5; //for PDH signal generation
-localparam IQ1   = 'd6; //for NA functionality
+localparam EXTDEMOD = 'd6; //external reference demodulator (replaces IQ1)
 localparam IQ2   = 'd7; //for PFD error signal
 //localparam CUSTOM1 = 'd8; //available slots
 localparam NONE = 2**LOG_MODULES-1; //code for no module; only used to switch off PWM outputs
@@ -146,6 +146,9 @@ reg [2-1:0] output_select [MODULES+EXTRAMODULES-1:0];
 
 // syncronization register to trigger simultaneous action of different dsp modules
 reg [MODULES-1:0] sync;
+
+// reference input select for ext_demod module (selects which DSP bus signal feeds ext_ref_i)
+reg [LOG_MODULES-1:0] ref_input_select;
 
 // bus read data of individual modules (only needed for 'real' modules)
 wire [ 32-1: 0] module_rdata [MODULES-1:0];  
@@ -258,8 +261,9 @@ always @(posedge clk_i) begin
       input_select [IQ0] <= ADC1;
       output_select[IQ0] <= OFF;
       
-      input_select [IQ1] <= ADC1;
-      output_select[IQ1] <= OFF;
+      input_select [EXTDEMOD] <= ADC1;
+      output_select[EXTDEMOD] <= OFF;
+      ref_input_select <= ADC2;  // default: reference from ADC2
 
       input_select [IQ2] <= ADC1;
       output_select[IQ2] <= OFF;
@@ -279,6 +283,8 @@ always @(posedge clk_i) begin
          if (sys_addr[16-1:0]==16'h00)     input_select[sys_addr[16+LOG_MODULES-1:16]] <= sys_wdata[ LOG_MODULES-1:0];
          if (sys_addr[16-1:0]==16'h04)    output_select[sys_addr[16+LOG_MODULES-1:16]] <= sys_wdata[ 2-1:0];
          if (sys_addr[16-1:0]==16'h0C)                                            sync <= sys_wdata[MODULES-1:0];
+         // ref_input_select for ext_demod: only writable from ext_demod's address space (module 6)
+         if (sys_addr[16-1:0]==16'h14 && sys_addr[16+LOG_MODULES-1:16]==EXTDEMOD) ref_input_select <= sys_wdata[LOG_MODULES-1:0];
       end
    end
 end
@@ -297,6 +303,7 @@ end else begin
 	  20'h08 : begin sys_ack <= sys_en;          sys_rdata <= {{32- 2{1'b0}},dat_b_saturated,dac_a_saturated}; end
 	  20'h0C : begin sys_ack <= sys_en;          sys_rdata <= {{32-MODULES{1'b0}},sync} ; end
       20'h10 : begin sys_ack <= sys_en;          sys_rdata <= {{32- 14{1'b0}},output_signal[sys_addr[16+LOG_MODULES-1:16]]} ; end
+      20'h14 : begin sys_ack <= sys_en;          sys_rdata <= {{32- LOG_MODULES{1'b0}},ref_input_select}; end
 
      default : begin sys_ack <= module_ack[sys_addr[16+LOG_MODULES-1:16]];    sys_rdata <=  module_rdata[sys_addr[16+LOG_MODULES-1:16]]  ; end
    endcase
@@ -386,9 +393,9 @@ generate for (j = 4; j < 5; j = j+1) begin
 end endgenerate
 
 
-//IQ modules
-generate for (j = 5; j < 7; j = j+1) begin
-    red_pitaya_iq_block 
+//IQ0 module (single IQ, was formerly j=5..6, now only j=5)
+generate for (j = 5; j < 6; j = j+1) begin
+    red_pitaya_iq_block
       iq
       (
 	     // data
@@ -399,10 +406,6 @@ generate for (j = 5; j < 7; j = j+1) begin
 	     .dat_o        (  output_direct[j]),  // output data
 		 .signal_o     (  output_signal[j]),  // output signal
 
-         // not using 2nd quadrature for most iq's: multipliers will be
-         // synthesized away by Vivado
-         //.signal2_o  (  output_signal[j*2]),  // output signal
-
 		 //communincation with PS
 		 .addr ( sys_addr[16-1:0] ),
 		 .wen  ( sys_wen & (sys_addr[20-1:16]==j) ),
@@ -410,6 +413,32 @@ generate for (j = 5; j < 7; j = j+1) begin
 		 .ack  ( module_ack[j] ),
 		 .rdata (module_rdata[j]),
 	     .wdata (sys_wdata)
+      );
+end endgenerate
+
+// External reference demodulator (replaces IQ1 at slot 6)
+// ext_ref_i is routed from the DSP bus via ref_input_select register
+wire [14-1:0] ext_demod_ref_signal;
+assign ext_demod_ref_signal = (ref_input_select == NONE) ? 14'b0 : output_signal[ref_input_select];
+
+generate for (j = 6; j < 7; j = j+1) begin
+    red_pitaya_ext_demod_block
+      ext_demod
+      (
+         .clk_i        (  clk_i          ),  // clock
+         .rstn_i       (  rstn_i         ),  // reset - active low
+         .dat_i        (  input_signal [j] ),  // input data (photodiode signal)
+         .ext_ref_i    (  ext_demod_ref_signal ),  // external reference (from DSP bus)
+         .dat_o        (  output_direct[j]),  // output_direct (for DAC summing)
+         .signal_o     (  output_signal[j]),  // output_signal (for DSP bus routing)
+
+         // communication with PS
+         .addr ( sys_addr[16-1:0] ),
+         .wen  ( sys_wen & (sys_addr[20-1:16]==j) ),
+         .ren  ( sys_ren & (sys_addr[20-1:16]==j) ),
+         .ack  ( module_ack[j] ),
+         .rdata (module_rdata[j]),
+         .wdata (sys_wdata)
       );
 end endgenerate
 

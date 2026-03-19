@@ -21,7 +21,7 @@ frequency. There are two working modes for the spectrum analyzer implemented in
 pyrpl:
 
 - iq mode: the input signal is demodulated around the center_frequency of
-  the analysis window (using iq2). The slowly varying quadratures are
+  the analysis window (using iq1). The slowly varying quadratures are
   subsequently sent to the 2 channels of the scope. The complex IQ time trace
   is built from the sum I(t) + iQ(t). The spectrum is then evaluated by
   performing a Fourier transforom of the the complex iq signal.
@@ -390,12 +390,12 @@ class SpectrumAnalyzer(AcquisitionModule):
     @property
     def iq(self):
         if not hasattr(self, '_iq'):
-            self._iq = self.pyrpl.rp.iq2  # can't use the normal pop
-            # mechanism because we specifically want the customized iq2
+            self._iq = self.pyrpl.rp.iq1  # can't use the normal pop
+            # mechanism because we specifically want the dual-output iq (slot 7)
             self._iq.owner = self.name
         return self._iq
 
-    iq_quadraturesignal = 'iq2_2'
+    iq_quadraturesignal = 'iq1_2'
 
     def _remaining_duration(self):
         """

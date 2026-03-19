@@ -115,7 +115,7 @@ with the network analyzer:
 
     # shortcut for na and bpf (bandpass filter)
     na = p.networkanalyzer
-    bpf = p.rp.iq2
+    bpf = p.rp.iq1
 
     # setup bandpass
     bpf.setup(frequency = 2.5e6, #center frequency
@@ -125,11 +125,11 @@ with the network analyzer:
               gain=2.0, # peak gain = +6 dB
               output_direct='off',
               output_signal='output_direct',
-              input='iq1')
+              input='iq0')
 
     # setup the network analyzer
     na.setup(start=1e5, stop=4e6, points=201, rbw=100, avg=3,
-                             amplitude=0.2, input='iq2',output_direct='off')
+                             amplitude=0.2, input='iq1',output_direct='off')
 
     # take transfer function
     tf1 = na.curve()
@@ -390,7 +390,7 @@ class Iq(FilterModule):
         modules with commensurate frequencies. This function must be called
         after having set the last iq frequency in order to be effective.
         """
-        self._synchronize(modules=['iq0', 'iq1', 'iq2'])
+        self._synchronize(modules=['iq0', 'iq1'])
         self._logger.debug("All IQ modules synchronized!")
 
     def _setup(self): # the function is here for its docstring to be used by the metaclass.

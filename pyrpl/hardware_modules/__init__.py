@@ -30,6 +30,7 @@ from .pid import Pid
 from .sampler import Sampler
 from .pwm import Pwm
 from .iq import Iq
+from .ext_demod import ExtDemod
 from .iir import IIR
 from .ams import AMS
 from .trig import Trig
