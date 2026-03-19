@@ -43,8 +43,10 @@ create_project -in_memory -part $part
 source                            $path_ip/system_bd.tcl
 
 # generate SDK files
-set_property synth_checkpoint_mode None [get_files system.bd] 
 generate_target all [get_files    system.bd]
+
+# Tell Vivado to include all BD IP sources for synthesis                                                                                                                   
+read_ip [get_files -all *.xci] 
 
 ################################################################################
 # read files:
