@@ -45,6 +45,10 @@ source                            $path_ip/system_bd.tcl
 # generate SDK files
 generate_target all [get_files    system.bd]
 
+# regenerate
+upgrade_ip [get_ips]                                                                                                                                                       
+generate_target all [get_files system.bd]
+
 ################################################################################
 # read files:
 # 1. RTL design sources
