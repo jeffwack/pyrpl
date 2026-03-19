@@ -43,11 +43,8 @@ create_project -in_memory -part $part
 source                            $path_ip/system_bd.tcl
 
 # generate SDK files
+set_property synth_checkpoint_mode None [get_files system.bd] 
 generate_target all [get_files    system.bd]
-
-# regenerate
-upgrade_ip [get_ips]                                                                                                                                                       
-generate_target all [get_files system.bd]
 
 ################################################################################
 # read files:
