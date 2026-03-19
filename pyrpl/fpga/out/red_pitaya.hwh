@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Mon Feb  2 21:00:07 2026" VIVADOVERSION="2024.2">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Thu Mar 19 02:57:08 2026" VIVADOVERSION="2024.1">
 
   <SYSTEMINFO ARCH="zynq" DEVICE="7z010" NAME="system" PACKAGE="clg400" SPEEDGRADE="-1"/>
 
@@ -1095,7 +1095,7 @@
   </EXTERNALINTERFACES>
 
   <MODULES>
-    <MODULE COREREVISION="33" FULLNAME="/axi_protocol_converter_0" HWVERSION="2.1" INSTANCE="axi_protocol_converter_0" IPTYPE="BUS" IS_ENABLE="1" MODCLASS="BUS" MODTYPE="axi_protocol_converter" VLNV="xilinx.com:ip:axi_protocol_converter:2.1">
+    <MODULE COREREVISION="31" FULLNAME="/axi_protocol_converter_0" HWVERSION="2.1" INSTANCE="axi_protocol_converter_0" IPTYPE="BUS" IS_ENABLE="1" MODCLASS="BUS" MODTYPE="axi_protocol_converter" VLNV="xilinx.com:ip:axi_protocol_converter:2.1">
       <DOCUMENTS>
         <DOCUMENT SOURCE="http://www.xilinx.com/cgi-bin/docs/ipdoc?c=axi_interconnect;v=v2_1;d=pg059-axi-interconnect.pdf"/>
       </DOCUMENTS>
@@ -1546,7 +1546,7 @@
         </BUSINTERFACE>
       </BUSINTERFACES>
     </MODULE>
-    <MODULE COREREVISION="16" FULLNAME="/proc_sys_reset" HWVERSION="5.0" INSTANCE="proc_sys_reset" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="proc_sys_reset" VLNV="xilinx.com:ip:proc_sys_reset:5.0">
+    <MODULE COREREVISION="15" FULLNAME="/proc_sys_reset" HWVERSION="5.0" INSTANCE="proc_sys_reset" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="proc_sys_reset" VLNV="xilinx.com:ip:proc_sys_reset:5.0">
       <DOCUMENTS>
         <DOCUMENT SOURCE="http://www.xilinx.com/cgi-bin/docs/ipdoc?c=proc_sys_reset;v=v5_0;d=pg164-proc-sys-reset.pdf"/>
       </DOCUMENTS>
@@ -3883,7 +3883,7 @@
         <PERIPHERAL INSTANCE="xadc"/>
       </PERIPHERALS>
     </MODULE>
-    <MODULE COREREVISION="11" FULLNAME="/xadc" HWVERSION="3.3" INSTANCE="xadc" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="xadc_wiz" VLNV="xilinx.com:ip:xadc_wiz:3.3">
+    <MODULE COREREVISION="10" FULLNAME="/xadc" HWVERSION="3.3" INSTANCE="xadc" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="xadc_wiz" VLNV="xilinx.com:ip:xadc_wiz:3.3">
       <DOCUMENTS>
         <DOCUMENT SOURCE="http://www.xilinx.com/cgi-bin/docs/ipdoc?c=xadc_wiz;v=v3_3;d=pg091-xadc-wiz.pdf"/>
       </DOCUMENTS>
